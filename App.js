@@ -9,6 +9,18 @@ import { enableScreens } from 'react-native-screens'
 enableScreens()
 import { LogBox } from 'react-native'
 LogBox.ignoreAllLogs()
+
+import { createStore, combineReducers } from 'redux'
+import mealsReducer from './centralstore/reducers/meals'
+
+const rootReducer = combineReducers({
+  meals: mealsReducer,
+})
+
+const store = createStore(rootReducer) //creating the redux store
+
+import { Provider } from 'react-redux'
+
 const fetchFonts = () => {
   return Font.loadAsync({
     'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
@@ -29,7 +41,11 @@ export default function App() {
     )
   }
 
-  return <MealsNavigator />
+  return (
+    <Provider store={store}>
+      <MealsNavigator />
+    </Provider>
+  )
 }
 
 const styles = StyleSheet.create({
