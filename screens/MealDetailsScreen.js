@@ -29,6 +29,14 @@ const MealDetailsScreen = (props) => {
     dispatch(toggleFavorite(mealId))
   }, [dispatch, mealId])
 
+  const currentMealIsFavorite = useSelector((state) =>
+    state.meals.favoriteMeals.some((meal) => meal.id === mealId)
+  )
+
+  useEffect(() => {
+    props.navigation.setParams({ isFav: currentMealIsFavorite })
+  }, [currentMealIsFavorite])
+
   return (
     <ScrollView>
       <Image source={{ uri: selectedMeal.imageUrl }} style={styles.img} />
@@ -59,6 +67,7 @@ const MealDetailsScreen = (props) => {
         return (
           <ListItem key={step}>
             {counter.current}
+            {/* {'\u2022'} */}
             {')  '}
             {step}
           </ListItem>
@@ -73,13 +82,14 @@ MealDetailsScreen.navigationOptions = (navigationData) => {
   const mealTitle = navigationData.navigation.getParam('mealTitle')
   // const selectedMeal = MEALS.find((meal) => meal.id === mealId)
   const toggleFavorite = navigationData.navigation.getParam('toggleFav')
+  const currentMealIsFavorite = navigationData.navigation.getParam('isFav')
   return {
     headerTitle: mealTitle,
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title='Favorite'
-          iconName='star'
+          iconName={currentMealIsFavorite ? 'ios-star' : 'ios-star-outline'}
           onPress={toggleFavorite}
           style={styles.icon}
         />

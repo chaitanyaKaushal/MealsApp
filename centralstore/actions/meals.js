@@ -6,3 +6,7 @@ export const toggleFavorite = (id) => {
 }
 
 // ACTION NUMBER 2
+export const SET_FILTERS = 'SET_FILTERS' //type
+export const setFilters = (filterSettings) => {
+  return { type: SET_FILTERS, filters: filterSettings }
+}
